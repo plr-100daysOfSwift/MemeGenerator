@@ -11,6 +11,8 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 	
 	var memes: [UIImage]!
 	var currentImage: UIImage?
+	var header = ""
+	var footer = ""
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,22 +26,42 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 	}
 
 	@objc func addMeme() {
-
-		chooseImage()
-
-		// prompt for header text
-
-		// prompt for footer text
-
-		// create image
-
-	}
-
-	func chooseImage() {
 		let imagePicker = UIImagePickerController()
 		imagePicker.delegate = self
 		imagePicker.allowsEditing = true
 		present(imagePicker, animated: true)
+	}
+
+	func setHeader() {
+		let ac = UIAlertController(title: "Header", message: "This text will appear at the top of your meme.", preferredStyle: .alert)
+		ac.addTextField()
+		ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self, weak ac] action in
+			guard let string: String = ac?.textFields?[0].text else { return }
+			self?.header = string
+			self?.setFooter()
+		}))
+		ac.addAction(UIAlertAction(title: "No thanks", style: .cancel) { [weak self] _ in
+			self?.setFooter()
+		})
+		present(ac, animated: true)
+	}
+
+	func setFooter () {
+		let ac = UIAlertController(title: "Footer", message: "This text will appear at the bottom of your meme.", preferredStyle: .alert)
+		ac.addTextField()
+		ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self, weak ac] action in
+			guard let string: String = ac?.textFields?[0].text else { return }
+			self?.footer = string
+			self?.createMeme()
+		}))
+		ac.addAction(UIAlertAction(title: "No thanks", style: .cancel) { [weak self] _ in
+			self?.createMeme()
+		})
+		present(ac, animated: true)
+	}
+
+	func createMeme() {
+
 	}
 
 	// MARK:- UIImagePickerControllerDelegate Methods
@@ -47,7 +69,9 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 		guard let image = info[.editedImage]  as? UIImage else { return }
 		currentImage = image
-		dismiss(animated: true)
+		dismiss(animated: true) { [weak self] in
+			self?.setHeader()
+		}
 	}
 
 	// MARK:- UICollectionView Data Source Methods
