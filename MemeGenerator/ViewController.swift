@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController {
-
+class ViewController: UICollectionViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+	
 	var memes: [UIImage]!
+	var currentImage: UIImage?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,7 +25,7 @@ class ViewController: UICollectionViewController {
 
 	@objc func addMeme() {
 
-		// pick an image
+		chooseImage()
 
 		// prompt for header text
 
@@ -34,6 +35,36 @@ class ViewController: UICollectionViewController {
 
 	}
 
+	func chooseImage() {
+		let imagePicker = UIImagePickerController()
+		imagePicker.delegate = self
+		imagePicker.allowsEditing = true
+		present(imagePicker, animated: true)
+	}
+
+	// MARK:- UIImagePickerControllerDelegate Methods
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		guard let image = info[.editedImage]  as? UIImage else { return }
+		currentImage = image
+		dismiss(animated: true)
+	}
+
+	// MARK:- UICollectionView Data Source Methods
+
+	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		return memes.count
+	}
+
+	override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+		guard	let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Meme", for: indexPath) as? MemeCell else { fatalError("Unable to dequeue Meme Cell") }
+
+		cell.imageView.image = memes[indexPath.item]
+
+		return cell
+
+	}
 
 }
 
