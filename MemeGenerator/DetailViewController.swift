@@ -15,9 +15,20 @@ class DetailViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareMeme))
+
 		if let image = image {
 			imageView.image = image
 		}
+	}
+
+	@objc func shareMeme() {
+		guard let image = image,
+					let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+		let title = "Meme"
+		let vc = UIActivityViewController(activityItems: [title as Any, imageData as Any], applicationActivities: [])
+		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+		present(vc, animated: true)
 	}
 
 }
