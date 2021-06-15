@@ -67,25 +67,22 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 		let meme = renderer.image { ctx in
 			let rectangle = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
 			currentImage.draw(in: rectangle)
-			if !header.isEmpty {
-				let headerRectangle = CGRect(origin: CGPoint(x: 20, y: 20), size: CGSize(width: size.width - 40, height: 100))
-				let attributes: [NSAttributedString.Key: Any] = [
-					.font: UIFont.boldSystemFont(ofSize: 48),
-					.foregroundColor: UIColor.white,
-				]
-				let attributedString = NSAttributedString(string: header, attributes: attributes)
-				attributedString.draw(in: headerRectangle)
-			}
-			if !footer.isEmpty {
-				let footerRectangle = CGRect(origin: CGPoint(x: 20, y: rectangle.size.height - 100), size: CGSize(width: size.width - 40, height: 100))
-				let attributes: [NSAttributedString.Key: Any] = [
-					.font: UIFont.boldSystemFont(ofSize: 48),
-					.foregroundColor: UIColor.white,
-				]
-				let attributedString = NSAttributedString(string: footer, attributes: attributes)
-				attributedString.draw(in: footerRectangle)
-			}
+
+			let attributes: [NSAttributedString.Key: Any] = [
+				.font: UIFont.boldSystemFont(ofSize: 48),
+				.foregroundColor: UIColor.white,
+			]
+			let headerRectangle = CGRect(origin: CGPoint(x: 20, y: 20), size: CGSize(width: size.width - 40, height: 100))
+			let footerRectangle = CGRect(origin: CGPoint(x: 20, y: rectangle.size.height - 100), size: CGSize(width: size.width - 40, height: 100))
+
+			let headerString = NSAttributedString(string: header, attributes: attributes)
+			headerString.draw(in: headerRectangle)
+
+			let footerString = NSAttributedString(string: footer, attributes: attributes)
+			footerString.draw(in: footerRectangle)
+
 		}
+
 		memes.insert(meme, at: 0)
 		collectionView.reloadData()
 	}
