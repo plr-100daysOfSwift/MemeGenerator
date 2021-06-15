@@ -69,8 +69,10 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 			currentImage.draw(in: rectangle)
 
 			let attributes: [NSAttributedString.Key: Any] = [
-				.font: UIFont.boldSystemFont(ofSize: 48),
+				.font: UIFont.systemFont(ofSize: 48),
 				.foregroundColor: UIColor.white,
+				.strokeColor: UIColor.black,
+				.strokeWidth: -3.0,
 			]
 			let headerRectangle = CGRect(origin: CGPoint(x: 20, y: 20), size: CGSize(width: size.width - 40, height: 100))
 			let footerRectangle = CGRect(origin: CGPoint(x: 20, y: rectangle.size.height - 100), size: CGSize(width: size.width - 40, height: 100))
