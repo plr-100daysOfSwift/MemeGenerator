@@ -113,5 +113,15 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 
 	}
 
+	// MARK:- UICollectionView Delegate Methods
+
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		if let vc = storyboard.instantiateViewController(identifier: "DetailViewController") as? DetailViewController {
+			vc.image = memes[indexPath.item]
+			navigationController?.pushViewController(vc, animated: true)
+		}
+	}
+
 }
 
